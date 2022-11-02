@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <!-- Si en showAsAction agregamos ifRoom, se crea un menu -->
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/statistics"
+        android:icon="@drawable/ic_chart"
+        android:title="Statistics"
+        app:showAsAction="withText"/>
+
+    <item
+        android:id="@+id/placeHolder"
+        android:title=""/>
+
+    <item
+        android:id="@+id/wallet"
+        android:icon="@drawable/ic_wallet"
+        android:title="Wallet"
+        app:showAsAction="withText"/>
+
+    <item
+        android:id="@+id/acoount"
+        android:icon="@drawable/ic_account"
+        android:title="Account"
+        app:showAsAction="withText"/>
+</menu>
