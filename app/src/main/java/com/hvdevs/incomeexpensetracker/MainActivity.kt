@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.hvdevs.incomeexpensetracker.databinding.ActivityMainBinding
 
+//Diseño: https://www.figma.com/file/OhYx60ta2pqs5BUDFhbCOW/%5BFREEBIES%5D-Income-%26-Expense-Tracker-(Community)?node-id=1%3A520
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
