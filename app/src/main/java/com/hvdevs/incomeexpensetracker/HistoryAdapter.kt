@@ -56,12 +56,14 @@ class HistoryAdapter(private val history: ArrayList<History>): RecyclerView.Adap
             holder.binding.cv.setBackgroundColor(R.drawable.card_history_item)
             holder.binding.item.setTextColor(Color.parseColor("#C5C5C7"))
             params.setMargins(0, 12, 0, 12)
+            holder.binding.cv.layoutParams = params
             holder.binding.cv.elevation = 12f
         }
         else {
             holder.binding.cv.setBackgroundColor(Color.parseColor("#FFFFFF"))
             holder.binding.item.setTextColor(Color.parseColor("#000000"))
             params.setMargins(0, 8, 0, 8)
+            holder.binding.cv.layoutParams = params
             holder.binding.cv.elevation = 0f
         }
     }
