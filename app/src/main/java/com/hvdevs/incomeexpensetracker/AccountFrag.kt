@@ -30,12 +30,12 @@ class AccountFrag : Fragment() {
             "Data and Privacy"
         )
         val images: ArrayList<Int> = arrayListOf(
-            R.mipmap.man,
-            R.mipmap.man,
-            R.mipmap.man,
-            R.mipmap.man,
-            R.mipmap.man,
-            R.mipmap.man
+            R.drawable.ic_add,
+            R.drawable.ic_account,
+            R.drawable.ic_profile,
+            R.drawable.ic_email,
+            R.drawable.ic_security,
+            R.drawable.ic_lock
         )
 
         val lv = view.findViewById<ListView>(R.id.lv)

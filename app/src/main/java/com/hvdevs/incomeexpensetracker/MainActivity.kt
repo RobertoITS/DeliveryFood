@@ -2,6 +2,8 @@ package com.hvdevs.incomeexpensetracker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import com.hvdevs.incomeexpensetracker.databinding.ActivityMainBinding
 
 //Diseño: https://www.figma.com/file/OhYx60ta2pqs5BUDFhbCOW/%5BFREEBIES%5D-Income-%26-Expense-Tracker-(Community)?node-id=1%3A520
@@ -11,6 +13,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         setContentView(binding.root)
 
         //Creamos el bottom menu, con otro dentro para simular el detalle:
