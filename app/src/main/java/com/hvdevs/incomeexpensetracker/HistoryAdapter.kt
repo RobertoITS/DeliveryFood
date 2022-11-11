@@ -1,13 +1,15 @@
 package com.hvdevs.incomeexpensetracker
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hvdevs.incomeexpensetracker.databinding.HistoryItemBinding
 
-class HistoryAdapter(private val history: ArrayList<History>): RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+class HistoryAdapter(private val history: ArrayList<History>, private val context: Context): RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     private lateinit var mListener: OnItemClickListener
     
@@ -37,7 +39,7 @@ class HistoryAdapter(private val history: ArrayList<History>): RecyclerView.Adap
         return HistoryViewHolder(binding, mListener)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         with(holder){
             // La imagen: binding.iv
@@ -51,19 +53,19 @@ class HistoryAdapter(private val history: ArrayList<History>): RecyclerView.Adap
             Common.currentItem = history[position]
             notifyDataSetChanged()
         }
-        val params = holder.binding.cv.layoutParams as ViewGroup.MarginLayoutParams
+//        val params = holder.binding.cv.layoutParams as ViewGroup.MarginLayoutParams
         if (rowIndex == position){
-            holder.binding.cv.setBackgroundColor(R.drawable.card_history_item)
+            holder.binding.cv.background = ContextCompat.getDrawable(context, R.drawable.card_history_item_selected)
             holder.binding.item.setTextColor(Color.parseColor("#C5C5C7"))
-            params.setMargins(0, 12, 0, 12)
-            holder.binding.cv.layoutParams = params
+//            params.setMargins(0, 12, 0, 12)
+//            holder.binding.cv.layoutParams = params
             holder.binding.cv.elevation = 12f
         }
         else {
-            holder.binding.cv.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            holder.binding.cv.background = ContextCompat.getDrawable(context, R.drawable.card_history_item)
             holder.binding.item.setTextColor(Color.parseColor("#000000"))
-            params.setMargins(0, 8, 0, 8)
-            holder.binding.cv.layoutParams = params
+//            params.setMargins(0, 8, 0, 8)
+//            holder.binding.cv.layoutParams = params
             holder.binding.cv.elevation = 0f
         }
     }

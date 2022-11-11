@@ -35,7 +35,7 @@ class HomeFrag : Fragment() {
         )
 
         binding.rv.layoutManager = LinearLayoutManager(context)
-        val adapter = HistoryAdapter(list)
+        val adapter = HistoryAdapter(list, requireContext())
         binding.rv.adapter = adapter
         adapter.setOnItemClickListener(object : HistoryAdapter.OnItemClickListener{
             override fun onClick(position: Int) {

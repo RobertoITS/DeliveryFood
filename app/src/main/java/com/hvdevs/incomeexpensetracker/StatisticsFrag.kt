@@ -54,7 +54,7 @@ open class StatisticsFrag : Fragment() {
         )
 
         binding.rv.layoutManager = LinearLayoutManager(context)
-        val adapter = HistoryAdapter(list)
+        val adapter = HistoryAdapter(list, requireContext())
         binding.rv.adapter = adapter
         adapter.setOnItemClickListener(object : HistoryAdapter.OnItemClickListener{
             override fun onClick(position: Int) {
@@ -106,14 +106,11 @@ open class StatisticsFrag : Fragment() {
         //Set a chart value selected listener
         pieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                var index = 0
+                val float: Float = e?.data.toString().toFloat()
+                val index = float.toInt()
                 //Display msg when value is selected
                 if(e == null) return
-                for (i in 0 until yData.size){
-                    if (yData[i].toFloat() == e.y){
-                        index = i
-                    }
-                }
+
                 Toast.makeText(context, xData[index] + " / $" + yData[index] + " - " + e.data + "%", Toast.LENGTH_SHORT).show()
             }
 

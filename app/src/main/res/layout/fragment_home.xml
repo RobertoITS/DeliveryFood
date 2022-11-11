@@ -8,8 +8,8 @@
 
     <!--Shapes only-->
     <LinearLayout
-        android:layout_width="564dp"
-        android:layout_height="227dp"
+        android:layout_width="@dimen/shape_home_w"
+        android:layout_height="@dimen/shape_home_h"
         android:background="@drawable/rectangle_shape"
         android:gravity="center"
         android:orientation="vertical"
@@ -17,23 +17,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-
     <LinearLayout
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="@dimen/ellipse_home_w"
+        android:layout_height="@dimen/ellipse_home_h"
         android:background="@drawable/ellipse_shape"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/ellipse_shape_inside"
-            android:layout_margin="5dp"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/ellipse_home_s_w"
+        android:layout_height="@dimen/ellipse_home_s_h"
         android:background="@drawable/ellipse_shape"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,11 +35,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias=".1"
         app:layout_constraintHorizontal_bias=".3">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/ellipse_shape_inside"
-            android:layout_margin="5dp"/>
     </LinearLayout>
     <!--End shapes-->
 
@@ -57,7 +46,7 @@
         android:layout_marginTop="30dp"
         android:text="Good afternoon"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,29 +54,29 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="@dimen/margin_20dp"
+        android:layout_marginTop="@dimen/margin_8dp"
         android:text="Roberto Aqueveque"
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="@dimen/text_25sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv1" />
 
     <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:background="@android:color/transparent"
-        android:layout_marginEnd="20dp"
+        android:layout_width="@dimen/width_height_50dp"
+        android:layout_height="@dimen/width_height_50dp"
+        android:layout_marginTop="@dimen/margin_30dp"
+        android:background="@drawable/image_button_shape"
+        android:layout_marginEnd="@dimen/margin_20dp"
         android:src="@drawable/ic_notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/ll1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/card_home_w"
+        android:layout_height="@dimen/card_home_h"
         android:layout_marginHorizontal="30dp"
         android:background="@drawable/card_shape"
         android:elevation="20dp"
@@ -101,40 +90,41 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginStart="@dimen/margin_15dp"
+            android:layout_marginTop="@dimen/margin_15dp"
             android:text="Total Balance"
             android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="@dimen/margin_15dp"
             android:text="$2,548,00"
             android:textColor="@color/white"
-            android:textSize="30sp" />
+            android:textSize="@dimen/text_30sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:layout_margin="@dimen/margin_20dp">
 
             <ImageView
                 android:id="@+id/iv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_down"
+                android:background="@drawable/image_button_shape"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/margin_5dp"
                 android:text="Income"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="@dimen/text_17sp"
                 app:layout_constraintStart_toEndOf="@+id/iv1"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -143,6 +133,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_up"
+                android:layout_marginEnd="@dimen/margin_5dp"
+                android:background="@drawable/image_button_shape"
                 app:layout_constraintEnd_toStartOf="@+id/tv2"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -150,10 +142,9 @@
                 android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
                 android:text="Expenses"
                 android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="@dimen/text_17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -162,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:text="$1.800,00"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv1" />
 
@@ -171,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:text="$280,00"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="@dimen/text_20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv2" />
 
@@ -183,21 +174,21 @@
         android:id="@+id/tv3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="@dimen/margin_15dp"
+        android:layout_marginTop="@dimen/margin_15dp"
         android:text="Transaction History"
-        android:textSize="17sp"
+        android:textSize="@dimen/text_17sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginTop="@dimen/margin_15dp"
+        android:layout_marginEnd="@dimen/margin_15dp"
         android:text="See All"
         android:textColor="#666666"
-        android:textSize="15sp"
+        android:textSize="@dimen/text_15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ll1" />
 
@@ -205,9 +196,9 @@
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginHorizontal="@dimen/margin_15dp"
+        android:layout_marginTop="@dimen/margin_15dp"
+        android:layout_marginBottom="@dimen/width_height_50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv3"
