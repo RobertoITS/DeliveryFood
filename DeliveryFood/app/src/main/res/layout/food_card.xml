@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_16dp_"
+    android:layout_marginVertical="@dimen/_8dp_"
+    android:outlineSpotShadowColor="@color/purple_500"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_110dp_">
+        
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv"
+            android:layout_width="@dimen/_64dp_"
+            android:layout_height="@dimen/_64dp_"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="@dimen/_20dp_"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="8dp">
+
+            <ImageView
+                android:id="@+id/foodImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/foodName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/cv"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_20dp_"
+            android:layout_marginStart="@dimen/_12dp_"
+            android:textSize="@dimen/_16sp_"
+            tools:text="Food"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/foodPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/_12dp_"
+            android:text="$20"
+            android:textSize="@dimen/_16sp_"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/foodDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="2 pieces of beef stew with homemade sauce, 2 pieces of beef stew with homemade sauce"
+            android:textSize="@dimen/_12sp_"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/foodName"
+            app:layout_constraintStart_toEndOf="@+id/cv"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="@dimen/_12dp_"/>
+
+        <RatingBar
+            android:id="@+id/foodRating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            app:layout_constraintStart_toEndOf="@+id/cv"
+            app:layout_constraintTop_toBottomOf="@+id/foodDescription"
+            android:layout_marginStart="@dimen/_12dp_"
+            android:layout_marginTop="@dimen/_7dp_"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/check_box_custom_favorite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

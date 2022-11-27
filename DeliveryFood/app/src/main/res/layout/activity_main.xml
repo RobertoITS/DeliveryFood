@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.ui.MainActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarMain"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_208dp_"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/toolbarLayoutMain"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="@color/purple_500"
+                app:collapsedTitleGravity="center"
+                app:titleCollapseMode="fade"
+                app:expandedTitleGravity="center"
+                app:collapsedTitleTextAppearance="@style/TextAppearance.FoodExample.Toolbar.Text"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:toolbarId="@id/toolbarMain">
+
+                <ImageView
+                    android:id="@+id/detail_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_208dp_"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax"
+                    android:src="@mipmap/logo"
+                    android:tag="overscroll"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_208dp_"
+                    android:foreground="@drawable/background_gradient_black"
+                    android:tag="overscroll"
+                    />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:titleTextColor="@android:color/transparent"
+                    android:background="@android:color/transparent"
+                    app:layout_collapseMode="pin"
+                    app:menu="@menu/menu_home" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/searchToolbar"
+                    app:collapseIcon="@drawable/ic_arrow_back"
+                    app:titleTextColor="@color/gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white"
+                    app:layout_collapseMode="pin"
+                    android:visibility="gone" />
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/foodRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:layout_marginTop="@dimen/_46dp_"
+            tools:listitem="@layout/food_category"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_46dp_"
+            android:elevation="8dp"
+            android:padding="@dimen/_8dp_"
+            app:tabTextAppearance="@style/textTab"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabGravity="fill"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicatorAnimationMode="elastic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainLayout"
+            app:tabMode="scrollable"
+            app:layout_anchor="@id/appbarMain"
+            app:layout_anchorGravity="bottom"
+            android:layout_gravity="bottom"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/tabs"
+            app:layout_anchorGravity="bottom|center"
+            android:layout_gravity="bottom|center"
+            android:padding="40dp"
+            android:visibility="gone"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/frag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

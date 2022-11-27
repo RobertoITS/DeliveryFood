@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.FoodExample.Toolbar.Text" parent="TextAppearance.MaterialComponents.Headline5" >
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="fontFamily"></item>
+    </style>
+
+    <style name="textTab" parent="Widget.Design.TabLayout">
+        <item name="android:textSize">@dimen/_16sp_</item>
+    </style>
+
+    <!-- Plus button on detail page -->
+
+</resources>
