@@ -80,6 +80,7 @@
             android:layout_marginTop="@dimen/_7dp_"/>
 
         <CheckBox
+            android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/check_box_custom_favorite"

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import com.ahmadhamwi.tabsync.TabbedListMediator
 import com.example.deliveryfood.detail.DetailFragment
@@ -142,86 +143,42 @@ class MainActivity : AppCompatActivity() {
     //Actualiza la lista del recycler
     @SuppressLint("NotifyDataSetChanged")
     private fun updateListFood(listFood: ArrayList<CategoryModel>) {
-        binding.foodRv.adapter = CategoryAdapter(this, listFood)
+        binding.foodRv.adapter = CategoryAdapter(this, listFood, this)
         initMediator()
     }
 
 
-    private fun revealLayoutFun() {
-        val layout = binding.frag
+    //Oculta el layout
+    private fun unRevealLayout() {
+        val layout = this.findViewById<FragmentContainerView>(id.frag)
 
-        // based on the boolean value the
-        // reveal layout should be toggled
-        if (!layout.isVisible) {
+        // get the right and bottom side lengths
+        // of the reveal layout
+        val x: Int = layout.right / 2
+        val y: Int = layout.bottom / 2
 
-            // get the right and bottom side
-            // lengths of the reveal layout
-            val x: Int = layout.right / 2
-            val y: Int = layout.bottom / 2
+        // here the starting radius of the reveal layout is its full width
+        val startRadius: Int = kotlin.math.max(layout.width, layout.height)
 
-            // here the starting radius of the reveal
-            // layout is 0 when it is not visible
-            val startRadius = 0
+        // and the end radius should be zero at this
+        // point because the layout should be closed
+        val endRadius = 0
 
-            // make the end radius should
-            // match the while parent view
-            val endRadius = kotlin.math.hypot(
-                layout.width.toDouble(),
-                layout.height.toDouble()
-            ).toInt()
+        // create the instance of the ViewAnimationUtils
+        // to initiate the circular reveal animation
+        val anim = ViewAnimationUtils.createCircularReveal(
+            layout, x, y,
+            startRadius.toFloat(), endRadius.toFloat()
+        )
 
-            // create the instance of the ViewAnimationUtils to
-            // initiate the circular reveal animation
-            val anim = ViewAnimationUtils.createCircularReveal(
-                layout, x, y,
-                startRadius.toFloat(), endRadius.toFloat()
-            )
+        // now as soon as the animation is ending, the reveal
+        // layout should also be closed
+        anim.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animator: Animator) {}
+            override fun onAnimationEnd(animator: Animator) {
+                layout.visibility = View.GONE
 
-            // make the invisible reveal layout to visible
-            // so that upon revealing it can be visible to user
-            layout.visibility = View.VISIBLE
-            // now start the reveal animation
-            anim.start()
-
-            // set the boolean value to true as the reveal
-            // layout is visible to the user
-//            isRevealed = binding.frag.isVisible
-
-//            getImages(imageShimmer)
-//            getVariations(context, variationRecycler, variationShimmer, price)
-//            getExtras(context, others, extrasShimmer)
-
-//            collapsingToolbarDetail.title = foodCategoryList[MainFragment().actualPos].name.toString()
-
-        } else {
-
-            // get the right and bottom side lengths
-            // of the reveal layout
-            val x: Int = layout.right / 2
-            val y: Int = layout.bottom / 2
-
-            // here the starting radius of the reveal layout is its full width
-            val startRadius: Int = kotlin.math.max(layout.width, layout.height)
-
-            // and the end radius should be zero at this
-            // point because the layout should be closed
-            val endRadius = 0
-
-            // create the instance of the ViewAnimationUtils
-            // to initiate the circular reveal animation
-            val anim = ViewAnimationUtils.createCircularReveal(
-                layout, x, y,
-                startRadius.toFloat(), endRadius.toFloat()
-            )
-
-            // now as soon as the animation is ending, the reveal
-            // layout should also be closed
-            anim.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animator: Animator) {}
-                override fun onAnimationEnd(animator: Animator) {
-                    layout.visibility = View.GONE
-
-                    //resetea la posicion del appbar y el nestedscrollview
+                //resetea la posicion del appbar y el nestedscrollview
 //                    appbarDetail.setExpanded(true)
 //                    detailScroll.scrollTo(0, 0)
 
@@ -230,26 +187,21 @@ class MainActivity : AppCompatActivity() {
 
 //                    price.text = ""
 
-                    //Limpiamos las listas
+                //Limpiamos las listas
 //                    MainFragment().variationsList.clear()
 //                    MainFragment().extrasList.clear()
 //                    MainFragment().imagesList.clear()
 //                    updateVariations(MainFragment().variationsList, context, variationRecycler, variationShimmer, price)
 //                    updateExtras(MainFragment().extrasList, context, others, extrasShimmer)
 //                    updateImages(MainFragment().imagesList, imageShimmer)
-                }
+            }
 
-                override fun onAnimationCancel(animator: Animator) {}
-                override fun onAnimationRepeat(animator: Animator) {}
-            })
+            override fun onAnimationCancel(animator: Animator) {}
+            override fun onAnimationRepeat(animator: Animator) {}
+        })
 
-            // start the closing animation
-            anim.start()
-
-            // set the boolean variable to false
-            // as the reveal layout is invisible
-//            isRevealed = binding.frag.isVisible
-        }
+        // start the closing animation
+        anim.start()
     }
 
     /**-------------------------------------SEARCH VIEW---------------------------------------*/
@@ -403,7 +355,7 @@ class MainActivity : AppCompatActivity() {
     @Deprecated("Ver posible cambio")
     override fun onBackPressed() {
         if (binding.frag.isVisible){
-            revealLayoutFun()
+            unRevealLayout()
         } else {
             super.onBackPressed()
         }

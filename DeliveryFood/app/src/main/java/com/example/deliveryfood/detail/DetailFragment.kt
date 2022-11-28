@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -60,12 +59,6 @@ class DetailFragment : Fragment() {
     //Manejo de las cantidades
     private var quantity = 1
     private var price: Long = 0
-
-    //Obtenemos el ID de la coleccion a la que accedemos
-    private var id: String? = null
-
-    //Instancia a la base de datos
-    private lateinit var db: FirebaseFirestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -133,83 +126,37 @@ class DetailFragment : Fragment() {
 
     //Revela el segundo layout de detalles desde el centro
     private fun revealLayoutFun() {
-
         val mRevealLayout = requireActivity().findViewById<FragmentContainerView>(R.id.frag)
 
-        // based on the boolean value the
-        // reveal layout should be toggled
-        if (!mRevealLayout.isVisible) {
+        // get the right and bottom side lengths
+        // of the reveal layout
+        val x: Int = mRevealLayout.right / 2
+        val y: Int = mRevealLayout.bottom / 2
 
-            // get the right and bottom side
-            // lengths of the reveal layout
-            val x: Int = mRevealLayout.right / 2
-            val y: Int = mRevealLayout.bottom / 2
+        // here the starting radius of the reveal layout is its full width
+        val startRadius: Int = kotlin.math.max(mRevealLayout.width, mRevealLayout.height)
 
-            // here the starting radius of the reveal
-            // layout is 0 when it is not visible
-            val startRadius = 0
+        // and the end radius should be zero at this
+        // point because the layout should be closed
+        val endRadius = 0
 
-            // make the end radius should
-            // match the while parent view
-            val endRadius = kotlin.math.hypot(
-                mRevealLayout.width.toDouble(),
-                mRevealLayout.height.toDouble()
-            ).toInt()
+        // create the instance of the ViewAnimationUtils
+        // to initiate the circular reveal animation
+        val anim = ViewAnimationUtils.createCircularReveal(
+            mRevealLayout, x, y,
+            startRadius.toFloat(), endRadius.toFloat()
+        )
 
-            // create the instance of the ViewAnimationUtils to
-            // initiate the circular reveal animation
-            val anim = ViewAnimationUtils.createCircularReveal(
-                mRevealLayout, x, y,
-                startRadius.toFloat(), endRadius.toFloat()
-            )
+        // now as soon as the animation is ending, the reveal
+        // layout should also be closed
+        anim.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animator: Animator) {}
+            override fun onAnimationEnd(animator: Animator) {
+                mRevealLayout.visibility = View.GONE
 
-            // make the invisible reveal layout to visible
-            // so that upon revealing it can be visible to user
-            mRevealLayout.visibility = View.VISIBLE
-            // now start the reveal animation
-            anim.start()
-
-            // set the boolean value to true as the reveal
-            // layout is visible to the user
-//            isRevealed = true
-//
-//            getImages()
-//            getVariations()
-//            getExtras()
-//
-//            binding.collapsingToolbarDetail.title = foodCategoryList[actualPos].name.toString()
-
-        } else {
-
-            // get the right and bottom side lengths
-            // of the reveal layout
-            val x: Int = mRevealLayout.right / 2
-            val y: Int = mRevealLayout.bottom / 2
-
-            // here the starting radius of the reveal layout is its full width
-            val startRadius: Int = kotlin.math.max(mRevealLayout.width, mRevealLayout.height)
-
-            // and the end radius should be zero at this
-            // point because the layout should be closed
-            val endRadius = 0
-
-            // create the instance of the ViewAnimationUtils
-            // to initiate the circular reveal animation
-            val anim = ViewAnimationUtils.createCircularReveal(
-                mRevealLayout, x, y,
-                startRadius.toFloat(), endRadius.toFloat()
-            )
-
-            // now as soon as the animation is ending, the reveal
-            // layout should also be closed
-            anim.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animator: Animator) {}
-                override fun onAnimationEnd(animator: Animator) {
-                    mRevealLayout.visibility = View.GONE
-
-                    //resetea la posicion del appbar y el nestedscrollview
-                    binding.appbarDetail.setExpanded(true)
-                    binding.detailScroll.scrollTo(0, 0)
+                //resetea la posicion del appbar y el nestedscrollview
+                binding.appbarDetail.setExpanded(true)
+                binding.detailScroll.scrollTo(0, 0)
 //
 //                    quantity = 1
 //                    binding.quantity.setText(quantity.toString())
@@ -223,19 +170,18 @@ class DetailFragment : Fragment() {
 //                    updateVariations(variationsList)
 //                    updateExtras(extrasList)
 //                    updateImages(imagesList)
-                }
+            }
 
-                override fun onAnimationCancel(animator: Animator) {}
-                override fun onAnimationRepeat(animator: Animator) {}
-            })
+            override fun onAnimationCancel(animator: Animator) {}
+            override fun onAnimationRepeat(animator: Animator) {}
+        })
 
-            // start the closing animation
-            anim.start()
+        // start the closing animation
+        anim.start()
 
-            // set the boolean variable to false
-            // as the reveal layout is invisible
+        // set the boolean variable to false
+        // as the reveal layout is invisible
 //            isRevealed = false
-        }
     }
 
     //Funcion para manejar la cantidad de pedidos
@@ -313,11 +259,12 @@ class DetailFragment : Fragment() {
 
     /**------------------------------------DATABASE QUERY-----------------------------------------*/
     //Obtenemos las imagenes
-    private fun getImages(){
+    fun getImages(id: String) {
+        val db = FirebaseFirestore.getInstance()
         imagesList = arrayListOf()
         db.collection("food/${id}/images/").get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty){
-                Log.e("FIREBASE", "Lista vacía")
+                Log.e("FIREBASE", "Lista vacía ${id}")
             } else {
                 for (dc in snapshot){
                     val image = dc.toObject(ImageSlider::class.java)
@@ -329,7 +276,7 @@ class DetailFragment : Fragment() {
     }
     //Actualizamos las listas de imagen
     @SuppressLint("NotifyDataSetChanged")
-    private fun updateImages(imagesList: ArrayList<ImageSlider>) {
+    fun updateImages(imagesList: ArrayList<ImageSlider>) {
         //El adaptador
         iAdapter = SliderAdapter(imagesList, viewPager2)
         viewPager2.adapter = iAdapter
@@ -341,7 +288,8 @@ class DetailFragment : Fragment() {
     }
 
     //Obtenemos los extras
-    private fun getExtras(){
+    fun getExtras(id: String) {
+        val db = FirebaseFirestore.getInstance()
         extrasList = arrayListOf()
         db.collection("food/${id}/extra/").get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty){
@@ -356,7 +304,7 @@ class DetailFragment : Fragment() {
     }
     //Actualizamos la lista de extras
     @SuppressLint("NotifyDataSetChanged")
-    private fun updateExtras(extrasList: ArrayList<VariationsExtras>) {
+    fun updateExtras(extrasList: ArrayList<VariationsExtras>) {
         //Adaptador
         eAdapter = ExtrasAdapter(extrasList)
         binding.others.adapter = eAdapter
@@ -377,7 +325,8 @@ class DetailFragment : Fragment() {
     }
 
     //Obtenemos las variedades
-    private fun getVariations() {
+    fun getVariations(id: String) {
+        val db = FirebaseFirestore.getInstance()
         variationsList = arrayListOf()
         db.collection("food/${id}/variations/").get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty){
@@ -392,7 +341,7 @@ class DetailFragment : Fragment() {
     }
     //Actualizamos la lista de variedades:
     @SuppressLint("NotifyDataSetChanged")
-    private fun updateVariations(variationsList: ArrayList<VariationsExtras>) {
+    fun updateVariations(variationsList: ArrayList<VariationsExtras>) {
         //El adaptador
         vAdapter = VariationsAdapter(variationsList)
         binding.variationRecycler.adapter = vAdapter
