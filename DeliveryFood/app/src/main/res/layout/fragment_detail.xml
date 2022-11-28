@@ -90,6 +90,7 @@
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="pin"
                     android:elevation="10dp"
+                    android:outlineSpotShadowColor="@color/purple_500"
                     app:navigationIcon="@drawable/ic_arrow_back_white"/>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -167,6 +168,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:elevation="10dp"
+                            android:outlineSpotShadowColor="@color/purple_500"
                             android:orientation="horizontal">
 
                             <TextView
@@ -336,6 +338,7 @@
                             android:layout_marginVertical="10dp"
                             android:elevation="10dp"
                             android:gravity="center_vertical"
+                            android:outlineSpotShadowColor="@color/purple_500"
                             android:text="If the product is not available"
                             android:textSize="@dimen/_20sp_" />
 
@@ -362,6 +365,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:elevation="6dp"
+            android:outlineSpotShadowColor="@color/purple_500"
             android:backgroundTint="#FF03DAC5"
             app:backgroundTint="@android:color/transparent"
             app:layout_anchor="@id/appbarDetail"
@@ -376,6 +380,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="20dp"
+            android:outlineSpotShadowColor="@color/purple_500"
             android:gravity="center">
 
             <ImageButton
@@ -385,6 +390,7 @@
                 android:layout_marginHorizontal="@dimen/_10dp_"
                 android:background="@drawable/quantity_bgn"
                 android:src="@drawable/ic_horizontal_rule_24"
+                android:outlineSpotShadowColor="@color/purple_500"
                 android:elevation="6dp"/>
 
             <EditText
@@ -395,6 +401,7 @@
                 android:background="@drawable/quantity_bgn"
                 android:textColor="@color/white"
                 android:inputType="number"
+                android:outlineSpotShadowColor="@color/purple_500"
                 android:elevation="6dp"/>
 
             <ImageButton
@@ -404,6 +411,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:background="@drawable/quantity_bgn"
                 android:src="@drawable/ic_add_24"
+                android:outlineSpotShadowColor="@color/purple_500"
                 android:elevation="6dp"/>
         </LinearLayout>
 

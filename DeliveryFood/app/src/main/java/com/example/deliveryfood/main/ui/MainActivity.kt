@@ -11,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.ahmadhamwi.tabsync.TabbedListMediator
 import com.example.deliveryfood.detail.DetailFragment
 import com.example.deliveryfood.R
@@ -26,6 +29,8 @@ import com.example.deliveryfood.main.mvvm.data.network.FoodRepoImplement
 import com.example.deliveryfood.main.mvvm.domain.FoodUseCaseImplement
 import com.example.deliveryfood.main.mvvm.presentation.viewmodel.FoodViewModel
 import com.example.deliveryfood.main.mvvm.presentation.viewmodel.FoodViewModelFactory
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.material.appbar.AppBarLayout
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -111,6 +116,7 @@ class MainActivity : AppCompatActivity() {
             binding.tabs.addTab(binding.tabs.newTab().setText(category.name))
         }
     }
+
     private fun initMediator() {
         TabbedListMediator(
             binding.foodRv,
@@ -147,10 +153,29 @@ class MainActivity : AppCompatActivity() {
         initMediator()
     }
 
-
+    /**
+     * Para lograr que esto funcione, llamamos las vistas desde el layout
+     * instanciado
+     * */
     //Oculta el layout
     private fun unRevealLayout() {
         val layout = this.findViewById<FragmentContainerView>(id.frag)
+
+        val appbarDetail = layout.findViewById<AppBarLayout>(R.id.appbarDetail)
+        val detailScroll = layout.findViewById<NestedScrollView>(R.id.detailScroll)
+        val quantity = layout.findViewById<EditText>(R.id.quantity)
+        val price = layout.findViewById<TextView>(R.id.price)
+
+        val othersRV = layout.findViewById<RecyclerView>(R.id.others)
+        val extrasShimmer = layout.findViewById<ShimmerFrameLayout>(R.id.extrasShimmer)
+
+
+        val viewPager2 = layout.findViewById<ViewPager2>(R.id.imageSliderViewPager)
+        val imageShimmer = layout.findViewById<ShimmerFrameLayout>(R.id.imageShimmer)
+
+
+        val variationsRV = layout.findViewById<RecyclerView>(R.id.variation_recycler)
+        val variationsShimmer = layout.findViewById<ShimmerFrameLayout>(R.id.variation_shimmer)
 
         // get the right and bottom side lengths
         // of the reveal layout
@@ -179,21 +204,21 @@ class MainActivity : AppCompatActivity() {
                 layout.visibility = View.GONE
 
                 //resetea la posicion del appbar y el nestedscrollview
-//                    appbarDetail.setExpanded(true)
-//                    detailScroll.scrollTo(0, 0)
+                appbarDetail.setExpanded(true)
+                detailScroll.scrollTo(0, 0)
 
-//                    MainFragment().quantity = 1
-//                    quantity.setText(MainFragment().quantity.toString())
+                DetailFragment().quantity = 1
+                quantity.setText(DetailFragment().quantity.toString())
 
-//                    price.text = ""
+                price.text = ""
 
                 //Limpiamos las listas
-//                    MainFragment().variationsList.clear()
-//                    MainFragment().extrasList.clear()
-//                    MainFragment().imagesList.clear()
-//                    updateVariations(MainFragment().variationsList, context, variationRecycler, variationShimmer, price)
-//                    updateExtras(MainFragment().extrasList, context, others, extrasShimmer)
-//                    updateImages(MainFragment().imagesList, imageShimmer)
+                DetailFragment().variationsList.clear()
+                DetailFragment().extrasList.clear()
+                DetailFragment().imagesList.clear()
+                DetailFragment().updateVariations(DetailFragment().variationsList, variationsRV, variationsShimmer)
+                DetailFragment().updateExtras(DetailFragment().extrasList, othersRV, extrasShimmer)
+                DetailFragment().updateImages(DetailFragment().imagesList, viewPager2, imageShimmer)
             }
 
             override fun onAnimationCancel(animator: Animator) {}
@@ -342,13 +367,17 @@ class MainActivity : AppCompatActivity() {
         if (foodName.isNotEmpty()) foodName =
             foodName.substring(0, 1).uppercase(Locale.getDefault()) + foodName.substring(1)
                 .lowercase(Locale.getDefault())
-        val results: ArrayList<FoodModel> = ArrayList()
-        for (food in listFood) {
-            if (food.name != null && food.name!!.contains(foodName)) {
-                results.add(food)
+        val results: ArrayList<CategoryModel> = ArrayList()
+        for (category in categories){
+            listFood = arrayListOf()
+            for (food in category.listOfFood){
+                if (food.name != null && food.name!!.contains(foodName)) {
+                    listFood.add(food)
+                }
             }
+            results.add(CategoryModel(category.name, listFood))
         }
-        //updateListFood(results)
+        updateListFood(results)
     }
     /**-------------------------------------SEARCH VIEW---------------------------------------*/
 

@@ -12,7 +12,6 @@ import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.RadioButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,6 +28,7 @@ import com.example.deliveryfood.detail.adapter.SliderAdapter
 import com.example.deliveryfood.detail.adapter.VariationsAdapter
 import com.example.deliveryfood.detail.model.ImageSlider
 import com.example.deliveryfood.detail.model.VariationsExtras
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -47,17 +47,17 @@ class DetailFragment : Fragment() {
      * @param: Listas para recolectar info:
      * */
     //Lista de variedades y su adaptador
-    private lateinit var variationsList: ArrayList<VariationsExtras>
+    var variationsList: ArrayList<VariationsExtras> = arrayListOf()
     private lateinit var vAdapter: VariationsAdapter
     //Lista de imagenes y su adaptador
-    private lateinit var imagesList: ArrayList<ImageSlider>
+    var imagesList: ArrayList<ImageSlider> = arrayListOf()
     private lateinit var iAdapter: SliderAdapter
     //Lista de extras y su adaptador
-    private lateinit var extrasList: ArrayList<VariationsExtras>
+    var extrasList: ArrayList<VariationsExtras> = arrayListOf()
     private lateinit var eAdapter: ExtrasAdapter
 
     //Manejo de las cantidades
-    private var quantity = 1
+    var quantity = 1
     private var price: Long = 0
 
     override fun onCreateView(
@@ -69,8 +69,7 @@ class DetailFragment : Fragment() {
         quantityPicker()
 
         binding.toolbarDetail.setNavigationOnClickListener {
-            revealLayoutFun()
-            Toast.makeText(context, "Boton atras", Toast.LENGTH_SHORT).show()
+            unRevealLayoutFun()
         }
 
         //Rotamos el fab button
@@ -89,7 +88,10 @@ class DetailFragment : Fragment() {
     }
 
     //Control del expand del appBar
-    private fun appBasExpandControl(appBarLayout: AppBarLayout, verticalOffset: Int) {
+    private fun appBasExpandControl(
+        appBarLayout: AppBarLayout,
+        verticalOffset: Int
+    ) {
         val scrollRange = appBarLayout.totalScrollRange
         val fraction = 1f * (scrollRange + verticalOffset) / scrollRange
         if (fraction < 0.35 && misAppbar2Expand) {
@@ -125,7 +127,7 @@ class DetailFragment : Fragment() {
     }
 
     //Revela el segundo layout de detalles desde el centro
-    private fun revealLayoutFun() {
+    private fun unRevealLayoutFun() {
         val mRevealLayout = requireActivity().findViewById<FragmentContainerView>(R.id.frag)
 
         // get the right and bottom side lengths
@@ -157,19 +159,17 @@ class DetailFragment : Fragment() {
                 //resetea la posicion del appbar y el nestedscrollview
                 binding.appbarDetail.setExpanded(true)
                 binding.detailScroll.scrollTo(0, 0)
-//
-//                    quantity = 1
-//                    binding.quantity.setText(quantity.toString())
-//
-//                    binding.price.text = ""
-//
-//                    //Limpiamos las listas
-//                    variationsList.clear()
-//                    extrasList.clear()
-//                    imagesList.clear()
-//                    updateVariations(variationsList)
-//                    updateExtras(extrasList)
-//                    updateImages(imagesList)
+                    quantity = 1
+                    binding.quantity.setText(quantity.toString())
+                    binding.price.text = ""
+
+                    //Limpiamos las listas
+                    variationsList.clear()
+                    extrasList.clear()
+                    imagesList.clear()
+                    updateVariations(variationsList, binding.variationRecycler, binding.variationShimmer)
+                    updateExtras(extrasList, binding.others, binding.extrasShimmer)
+                    updateImages(imagesList, viewPager2, binding.imageShimmer)
             }
 
             override fun onAnimationCancel(animator: Animator) {}
@@ -178,10 +178,6 @@ class DetailFragment : Fragment() {
 
         // start the closing animation
         anim.start()
-
-        // set the boolean variable to false
-        // as the reveal layout is invisible
-//            isRevealed = false
     }
 
     //Funcion para manejar la cantidad de pedidos
@@ -259,7 +255,11 @@ class DetailFragment : Fragment() {
 
     /**------------------------------------DATABASE QUERY-----------------------------------------*/
     //Obtenemos las imagenes
-    fun getImages(id: String) {
+    fun getImages(
+        id: String,
+        viewPager2: ViewPager2,
+        imageShimmer: ShimmerFrameLayout
+    ) {
         val db = FirebaseFirestore.getInstance()
         imagesList = arrayListOf()
         db.collection("food/${id}/images/").get().addOnSuccessListener { snapshot ->
@@ -270,64 +270,77 @@ class DetailFragment : Fragment() {
                     val image = dc.toObject(ImageSlider::class.java)
                     imagesList.add(image)
                 }
-                updateImages(imagesList)
+                updateImages(imagesList, viewPager2, imageShimmer)
             }
         }
     }
     //Actualizamos las listas de imagen
     @SuppressLint("NotifyDataSetChanged")
-    fun updateImages(imagesList: ArrayList<ImageSlider>) {
+    fun updateImages(
+        imagesList: ArrayList<ImageSlider>,
+        viewPager2: ViewPager2,
+        imageShimmer: ShimmerFrameLayout) {
         //El adaptador
         iAdapter = SliderAdapter(imagesList, viewPager2)
         viewPager2.adapter = iAdapter
         iAdapter.notifyDataSetChanged()
 
         //Paramos el shimmer
-        binding.imageShimmer.stopShimmer()
-        binding.imageShimmer.visibility = View.GONE
+        imageShimmer.stopShimmer()
+        imageShimmer.visibility = View.GONE
     }
 
     //Obtenemos los extras
-    fun getExtras(id: String) {
+    fun getExtras(
+        id: String,
+        rv: RecyclerView,shimmer:
+        ShimmerFrameLayout) {
         val db = FirebaseFirestore.getInstance()
         extrasList = arrayListOf()
-        db.collection("food/${id}/extra/").get().addOnSuccessListener { snapshot ->
+        db.collection("food/${id}/extras/").get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty){
                 Log.e("FIREBASE", "Lista vacía")
             } else {
                 for (dc in snapshot) {
                     extrasList.add(dc.toObject(VariationsExtras::class.java))
                 }
-                updateExtras(extrasList)
+                updateExtras(extrasList, rv, shimmer)
             }
         }
     }
     //Actualizamos la lista de extras
     @SuppressLint("NotifyDataSetChanged")
-    fun updateExtras(extrasList: ArrayList<VariationsExtras>) {
+    fun updateExtras(
+        extrasList: ArrayList<VariationsExtras>,
+        rv: RecyclerView,
+        shimmer: ShimmerFrameLayout
+    ) {
         //Adaptador
         eAdapter = ExtrasAdapter(extrasList)
-        binding.others.adapter = eAdapter
+        rv.adapter = eAdapter
         //Para evitar el error del gridlayout (lista en 0 valores), colocamos la condicion:
         if (extrasList.size == 0) {
-            binding.others.layoutManager = LinearLayoutManager(context)
+            rv.layoutManager = LinearLayoutManager(context)
         } else {
             /**Usamos el gridlayoutmanager para agrandar el layout y que se ajuste a la pantalla
              * La cantidad de filas la define el tamaño de la lista, en modo horizontal*/
             GridLayoutManager(context, extrasList.size / 2, RecyclerView.VERTICAL, false).apply {
-                binding.others.layoutManager = this
+                rv.layoutManager = this
             }
         }
         eAdapter.notifyDataSetChanged()
         //Paramos el shimmer
-        binding.extrasShimmer.stopShimmer()
-        binding.extrasShimmer.visibility = View.GONE
+        shimmer.stopShimmer()
+        shimmer.visibility = View.GONE
     }
 
     //Obtenemos las variedades
-    fun getVariations(id: String) {
+    fun getVariations(
+        id: String,
+        rv: RecyclerView,
+        shimmer: ShimmerFrameLayout
+    ) {
         val db = FirebaseFirestore.getInstance()
-        variationsList = arrayListOf()
         db.collection("food/${id}/variations/").get().addOnSuccessListener { snapshot ->
             if (snapshot.isEmpty){
                 Log.e("FIREBASE", "Lista vacía")
@@ -335,34 +348,38 @@ class DetailFragment : Fragment() {
                 for (dc in snapshot) {
                     variationsList.add(dc.toObject(VariationsExtras::class.java))
                 }
-                updateVariations(variationsList)
+                updateVariations(variationsList, rv, shimmer)
             }
         }
     }
     //Actualizamos la lista de variedades:
     @SuppressLint("NotifyDataSetChanged")
-    fun updateVariations(variationsList: ArrayList<VariationsExtras>) {
+    fun updateVariations(
+        variationsList: ArrayList<VariationsExtras>,
+        rv: RecyclerView,
+        shimmer: ShimmerFrameLayout
+    ) {
         //El adaptador
         vAdapter = VariationsAdapter(variationsList)
-        binding.variationRecycler.adapter = vAdapter
+        rv.adapter = vAdapter
 
         //Desactivamos el scroll
-        binding.variationRecycler.isNestedScrollingEnabled = false
+        rv.isNestedScrollingEnabled = false
 
         if (variationsList.isEmpty()){
-            binding.variationRecycler.layoutManager = LinearLayoutManager(context)
+            rv.layoutManager = LinearLayoutManager(context)
         } else {
             /**Usamos el gridlayoutmanager para agrandar el layout y que se ajuste a la pantalla
              * La cantidad de filas la define el tamaño de la lista, en modo horizontal*/
             GridLayoutManager(context, variationsList.size, RecyclerView.HORIZONTAL, false).apply {
-                binding.variationRecycler.layoutManager = this
+                rv.layoutManager = this
             }
         }
         vAdapter.notifyDataSetChanged()
 
         //Paramos el shimmer
-        binding.variationShimmer.stopShimmer()
-        binding.variationShimmer.visibility = View.GONE
+        shimmer.stopShimmer()
+        shimmer.visibility = View.GONE
 
         /**Aqui sobreescribimos la funcion creada en el adapter
          * usando interface:*/
@@ -387,7 +404,8 @@ class DetailFragment : Fragment() {
                     lastCheckedPos = clickedPos
                 } else lastChecked = null
                 price = variationsList[position].price!!.toLong()
-                binding.price.text = "$${variationsList[position].price!! * quantity}"
+                //TODO Larga un NullPointerException!!
+//                binding.price.text = "$${price * quantity}"
             }
         })
     }

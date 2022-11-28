@@ -8,14 +8,15 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.deliveryfood.R
 import com.example.deliveryfood.databinding.FoodCategoryBinding
 import com.example.deliveryfood.detail.DetailFragment
 import com.example.deliveryfood.main.model.CategoryModel
 import com.example.deliveryfood.main.model.FoodModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
 class CategoryAdapter(
@@ -90,10 +91,18 @@ class CategoryAdapter(
         view.visibility = View.VISIBLE
         // now start the reveal animation
         anim.start()
+        //Instanciamos todos los elementos que usan las listas (por el binding no se puede)
+        val othersRV = activity.findViewById<RecyclerView>(R.id.others)
+        val extrasShimmer = activity.findViewById<ShimmerFrameLayout>(R.id.extrasShimmer)
+        DetailFragment().getExtras(food.id, othersRV, extrasShimmer)
 
-        DetailFragment().getImages(food.id)
-        DetailFragment().getVariations(food.id)
-        DetailFragment().getExtras(food.id)
+        val viewPager2 = activity.findViewById<ViewPager2>(R.id.imageSliderViewPager)
+        val imageShimmer = activity.findViewById<ShimmerFrameLayout>(R.id.imageShimmer)
+        DetailFragment().getImages(food.id, viewPager2,imageShimmer)
+
+        val variationsRV = activity.findViewById<RecyclerView>(R.id.variation_recycler)
+        val variationsShimmer = activity.findViewById<ShimmerFrameLayout>(R.id.variation_shimmer)
+        DetailFragment().getVariations(food.id, variationsRV, variationsShimmer)
 
         val cTD = activity.findViewById<FragmentContainerView>(R.id.frag)
         cTD.findViewById<CollapsingToolbarLayout>(R.id.collapsingToolbarDetail).title = food.name

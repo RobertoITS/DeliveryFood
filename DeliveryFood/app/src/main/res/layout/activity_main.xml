@@ -90,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_46dp_"
             android:elevation="8dp"
+            android:outlineSpotShadowColor="@color/purple_500"
             android:padding="@dimen/_8dp_"
             app:tabTextAppearance="@style/textTab"
             app:tabIndicator="@drawable/tab_indicator"
