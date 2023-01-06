@@ -56,7 +56,35 @@
                     app:titleTextColor="@android:color/transparent"
                     android:background="@android:color/transparent"
                     app:layout_collapseMode="pin"
-                    app:menu="@menu/menu_home" />
+                    app:menu="@menu/menu_home">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/image_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start"
+                        app:cardCornerRadius="20dp"
+                        android:scaleX="0"
+                        android:scaleY="0"
+                        android:backgroundTint="@color/gray">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="2dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:src="@mipmap/logo"
+                                android:layout_gravity="start"
+                                android:scaleType="centerCrop"/>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </androidx.cardview.widget.CardView>
+
+                </androidx.appcompat.widget.Toolbar>
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/searchToolbar"

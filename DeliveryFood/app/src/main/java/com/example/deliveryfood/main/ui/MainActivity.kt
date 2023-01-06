@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.ahmadhamwi.tabsync.TabbedListMediator
@@ -33,6 +34,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
     //Binding
@@ -57,6 +59,8 @@ class MainActivity : AppCompatActivity() {
     //Controla la visibilidad del searchToolbar
     private var visibility: Boolean = false
 
+    private var misAppbar2Expand = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -70,6 +74,12 @@ class MainActivity : AppCompatActivity() {
         initWidget()
 
         getData()
+
+        binding.appbarMain.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            appBasExpandControl(appBarLayout, verticalOffset)
+        }
+
+
 
     }
 
@@ -387,6 +397,33 @@ class MainActivity : AppCompatActivity() {
             unRevealLayout()
         } else {
             super.onBackPressed()
+        }
+    }
+
+    //Control del expand del appBar
+    private fun appBasExpandControl(
+        appBarLayout: AppBarLayout,
+        verticalOffset: Int
+    ) {
+        val scrollRange = appBarLayout.totalScrollRange
+        val fraction = 1f * (scrollRange + verticalOffset) / scrollRange
+        if (abs(verticalOffset) >= appBarLayout.totalScrollRange){
+
+        }
+        else {
+
+        }
+
+        if (fraction < 0.35 && misAppbar2Expand) {
+            //Hide here
+            misAppbar2Expand = false
+            //Se cambia la escala de la vista
+            binding.imageIcon.animate().scaleX(1f).scaleY(1f)
+        }
+        if (fraction > 0.27 && !misAppbar2Expand) {
+            //Show here
+            misAppbar2Expand = true
+            binding.imageIcon.animate().scaleX(0f).scaleY(0f)
         }
     }
 }
